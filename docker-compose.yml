@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file: .env
+    depends_on:
+      - db
+      - redis
+      - regula
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: passportdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: StrongPass2026!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+
+  regula:
+    image: regulaforensics/docreader:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./regula.license:/app/extBin/unix/regula.license:ro
+
+volumes:
+  postgres_data:
