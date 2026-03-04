@@ -1,0 +1,16 @@
+{
+  "name": "Travel Agency Passport Helper",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/app",
+  "postCreateCommand": "pnpm install --frozen-lockfile && npx prisma generate && npx prisma db push && echo '✅ All set! Open http://localhost:3000'",
+  "forwardPorts": [3000, 8080],
+  "portsAttributes": {
+    "3000": { "label": "Passport App", "onAutoForward": "openPreview" },
+    "8080": { "label": "Regula Document Reader" }
+  },
+  "remoteUser": "node",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  }
+}
